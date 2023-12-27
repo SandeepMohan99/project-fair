@@ -5,19 +5,22 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
+import { BASE_URL } from '../services/baseurl';
 
-function ProjectCard() {
+function ProjectCard({project}) {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    console.log(project.projectImage);
+
     return (
         <div>
             <Card style={{ width: '18rem' }} className='shadow' onClick={handleShow}>
-                <Card.Img variant="top" src={videoplayer}  className='p-3 rounded-3' />
+                <Card.Img variant="top" src={project?`${BASE_URL}/uploads/${project.projectImage}`:videoplayer}  className='p-3 rounded-3' />
                 <Card.Body>
-                    <Card.Title>Video Player</Card.Title>
+                    <Card.Title className='text-info'>{project.title}</Card.Title>
                 </Card.Body>
             </Card>
             <Modal
@@ -29,7 +32,7 @@ function ProjectCard() {
                 centered
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Video Player</Modal.Title>
+                    <Modal.Title className='text-info'>{project.title}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Row>
@@ -38,9 +41,9 @@ function ProjectCard() {
                         </Col>
                         <Col sm={12} md={6} lg={6}>
                             <h4>Description</h4>
-                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quisquam iusto architecto maiores aut exercitationem illo tempore illum inventore sed molestiae hic nam maxime sequi, totam expedita quibusdam libero, nisi error!
+                            <p>{project.overview}
                             </p>
-                            <p><span className="fw-bolder">Technologies</span>: HTML, CSS, REACT</p>
+                            <p><span className="fw-bolder">Technologies</span>: {project.language}</p>
                         </Col>
                     </Row>
                     <div className="d-flex mb-3">

@@ -28,6 +28,13 @@ pfserver.use(express.json())
 // server use router
 pfserver.use(router)
 
+
+//to get uploaded images
+//pfServer should use upload folder
+//1at argument - how the other application should use this file
+//2nd argument - to export the upload folder
+pfserver.use('/uploads',express.static('/uploads'))
+
 //import connections.js file
 require('./DB/connections')
 

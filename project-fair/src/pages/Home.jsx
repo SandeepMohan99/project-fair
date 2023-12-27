@@ -4,22 +4,41 @@ import hero from'../Assets/hero.png'
 import ProjectCard from '../components/ProjectCard'
 import { Link } from 'react-router-dom'
 import Header from '../components/Header'
+import { homeprojectAPI } from '../services/allAPI'
 
 
 function Home() {
-  
+  //state to store token
   const [isLogin, setIsLogin] = useState(false);
+
+  //state to store homeproject
+  //initial value should be an empty array
+  const [homeProject, setHomeProject] = useState([])
+
   useEffect(() => {
     if(sessionStorage.getItem('tocken')){
       setIsLogin(sessionStorage.getItem('tocken'));
+    }
+    else{
+      setIsLogin("")
     }
     
   },[])
   console.log(isLogin);
 
-  return (
-    
 
+  //function to getHomeProject
+  const getHomeProject = async()=>{
+    const result = await homeprojectAPI()
+    console.log(result.data);
+    setHomeProject(result.data)
+  }
+
+  useEffect(()=>{
+    getHomeProject()
+  },[])
+
+  return (
     <>
     <Header isLogin={isLogin} />
       
@@ -45,15 +64,23 @@ function Home() {
           <div className="text-center">
             <h1>Explore our projects</h1>
             <div className="d-flex justify-content-center flex-wrap mb-5 mt-5">
-              <div className="ms-5 mb-4" style={{width:'400px'}}>
+
+              {homeProject?.length>0?
+                homeProject.map((item)=>(
+                  <div className="ms-5 mb-4" style={{width:'400px'}}>
+                <ProjectCard project = {item}/>
+              </div>))
+                 :null
+              }
+
+              {/* <div className="ms-5 mb-4" style={{width:'400px'}}>
                 <ProjectCard/>
               </div>
+
               <div className="ms-5 mb-4" style={{width:'400px'}}>
                 <ProjectCard/>
-              </div>
-              <div className="ms-5 mb-4" style={{width:'400px'}}>
-                <ProjectCard/>
-              </div>
+              </div> */}
+
             </div>
             <div className='text-center'>
               <Button style={{background:'black',color:'white',border:'none'}}>
